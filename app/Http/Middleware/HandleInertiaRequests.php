@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -38,10 +39,13 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'app' => [
-                'name' => config('app.name'),
+                'name' => \Illuminate\Support\Facades\Schema::hasTable('site_settings')
+                    ? SiteSetting::get('site_name', config('app.name'))
+                    : config('app.name'),
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
             ],
         ];
     }

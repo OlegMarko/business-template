@@ -1,6 +1,10 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
+
+defineProps({
+    privacyContent: { type: String, default: '' },
+});
 </script>
 
 <template>
@@ -11,13 +15,17 @@ import { Link } from '@inertiajs/vue3';
                     <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
                         Privacy Policy
                     </h1>
-                    <p class="mt-6 text-lg leading-relaxed text-slate-600">
-                        This privacy policy explains how we collect, use, and protect your personal data when you use our website and services. 
-                        We operate in the European Union and comply with the General Data Protection Regulation (GDPR) and applicable data protection laws.
-                    </p>
-                </div>
-
-                <div class="mt-16 space-y-12">
+                    <div
+                        v-if="privacyContent"
+                        class="privacy-content mt-6 space-y-12 text-slate-600"
+                        v-html="privacyContent"
+                    />
+                    <template v-else>
+                        <p class="mt-6 text-lg leading-relaxed text-slate-600">
+                            This privacy policy explains how we collect, use, and protect your personal data when you use our website and services.
+                            We operate in the European Union and comply with the General Data Protection Regulation (GDPR) and applicable data protection laws.
+                        </p>
+                        <div class="mt-16 space-y-12">
                     <div>
                         <h2 class="text-2xl font-semibold text-slate-900">1. Data controller</h2>
                         <p class="mt-4 text-slate-600 leading-relaxed">
@@ -120,6 +128,8 @@ import { Link } from '@inertiajs/vue3';
                             <Link href="/contact" class="font-medium text-primary-600 underline hover:text-primary-700">contact us</Link>.
                         </p>
                     </div>
+                        </div>
+                    </template>
                 </div>
             </div>
         </section>

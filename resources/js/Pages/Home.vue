@@ -1,13 +1,23 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
+
+const props = defineProps({
+    heroTitle: { type: String, default: 'Professional services for businesses across Europe' },
+    heroDescription: { type: String, default: 'We help companies grow with tailored solutions, local expertise, and a commitment to quality and compliance across the EU.' },
+    heroImage: { type: String, default: null },
+    homeBlocks: { type: Array, default: () => [] },
+});
+
+const heroImageSrc = computed(() => props.heroImage || '/images/hero-truck.png');
 </script>
 
 <template>
     <AppLayout>
         <section class="relative min-h-[70vh] w-full">
             <img
-                src="/images/hero-truck.png"
+                :src="heroImageSrc"
                 alt="Our fleet — priority freight and logistics across Europe"
                 class="absolute inset-0 h-full w-full object-cover object-center"
             />
@@ -16,11 +26,12 @@ import { Link } from '@inertiajs/vue3';
                 <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                     <div class="max-w-2xl">
                         <h1 class="text-4xl font-bold tracking-tight text-white drop-shadow-sm sm:text-5xl">
-                            Professional services for businesses across Europe
+                            {{ heroTitle }}
                         </h1>
-                        <p class="mt-6 text-lg text-white/95 drop-shadow-sm">
-                            We help companies grow with tailored solutions, local expertise, and a commitment to quality and compliance across the EU.
-                        </p>
+                        <div
+                            class="mt-6 text-lg text-white/95 drop-shadow-sm [&_p]:my-2 [&_a]:underline [&_a]:decoration-white/70"
+                            v-html="heroDescription"
+                        />
                         <div class="mt-10 flex flex-wrap gap-4">
                             <Link
                                 href="/services"
@@ -46,38 +57,19 @@ import { Link } from '@inertiajs/vue3';
                     Why work with us
                 </h2>
                 <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    <div class="rounded-xl border border-primary-200/60 bg-primary-50/30 p-6">
+                    <div
+                        v-for="(block, index) in homeBlocks"
+                        :key="index"
+                        class="rounded-xl border border-primary-200/60 bg-primary-50/30 p-6"
+                        :class="{ 'sm:col-span-2 lg:col-span-1': index === 2 && homeBlocks.length === 3 }"
+                    >
                         <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0h.5a2.5 2.5 0 002.5-2.5V3.935M12 12a2 2 0 104 0 2 2 0 00-4 0z" />
                             </svg>
                         </div>
-                        <h3 class="mt-4 font-semibold text-slate-900">EU-wide coverage</h3>
-                        <p class="mt-2 text-sm text-slate-600">
-                            We operate across the European Union with local knowledge and regulatory awareness.
-                        </p>
-                    </div>
-                    <div class="rounded-xl border border-primary-200/60 bg-primary-50/30 p-6">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <h3 class="mt-4 font-semibold text-slate-900">Compliant & secure</h3>
-                        <p class="mt-2 text-sm text-slate-600">
-                            Our processes align with GDPR and EU standards so you can focus on your business.
-                        </p>
-                    </div>
-                    <div class="rounded-xl border border-primary-200/60 bg-primary-50/30 p-6 sm:col-span-2 lg:col-span-1">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                        </div>
-                        <h3 class="mt-4 font-semibold text-slate-900">Results-driven</h3>
-                        <p class="mt-2 text-sm text-slate-600">
-                            We deliver measurable outcomes and clear communication at every step.
-                        </p>
+                        <h3 class="mt-4 font-semibold text-slate-900">{{ block.title }}</h3>
+                        <p class="mt-2 text-sm text-slate-600">{{ block.description }}</p>
                     </div>
                 </div>
             </div>

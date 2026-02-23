@@ -115,4 +115,16 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact form notification address
+    |--------------------------------------------------------------------------
+    |
+    | New contact form submissions are sent to this address. Falls back to
+    | MAIL_FROM_ADDRESS if not set.
+    |
+    */
+
+    'admin' => env('MAIL_ADMIN_EMAIL', env('MAIL_FROM_ADDRESS')),
+
 ];

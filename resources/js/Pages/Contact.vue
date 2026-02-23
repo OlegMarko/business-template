@@ -1,7 +1,9 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
+const page = usePage();
 const form = useForm({
     name: '',
     email: '',
@@ -9,6 +11,48 @@ const form = useForm({
     subject: '',
     message: '',
 });
+
+const popup = ref({ show: false, type: 'success', message: '' });
+let popupTimeout = null;
+
+function showPopup(type, message) {
+    if (popupTimeout) clearTimeout(popupTimeout);
+    popup.value = { show: true, type, message };
+    popupTimeout = setTimeout(() => {
+        popup.value.show = false;
+        popupTimeout = null;
+    }, 5000);
+}
+
+function closePopup() {
+    if (popupTimeout) clearTimeout(popupTimeout);
+    popupTimeout = null;
+    popup.value.show = false;
+}
+
+watch(
+    () => page.props.flash,
+    (flash) => {
+        if (flash?.success) {
+            form.reset();
+            showPopup('success', 'Your message has been sent successfully. We\'ll get back to you soon.');
+        }
+        if (flash?.error) {
+            showPopup('error', flash.error);
+        }
+    },
+    { deep: true, immediate: true }
+);
+
+watch(
+    () => form.errors,
+    (errors) => {
+        if (Object.keys(errors).length > 0 && !form.processing) {
+            showPopup('error', 'Please fix the errors below and try again.');
+        }
+    },
+    { deep: true }
+);
 </script>
 
 <template>
@@ -114,9 +158,46 @@ const form = useForm({
                             >
                                 {{ form.processing ? 'Sending...' : 'Send message' }}
                             </button>
-                            <span v-if="form.recentlySuccessful || $page.props.flash?.success" class="text-sm text-green-600">Message sent successfully.</span>
                         </div>
                     </form>
+
+                    <!-- Success / error popup -->
+                    <Teleport to="body">
+                        <Transition name="popup">
+                            <div
+                                v-if="popup.show"
+                                class="fixed inset-0 z-50 flex items-start justify-center pt-8 sm:pt-16"
+                                role="alert"
+                                aria-live="polite"
+                            >
+                                <div
+                                    class="mx-4 flex max-w-md items-start gap-3 rounded-xl border px-4 py-3 shadow-lg sm:px-5 sm:py-4"
+                                    :class="popup.type === 'success'
+                                        ? 'border-green-200 bg-green-50 text-green-900'
+                                        : 'border-red-200 bg-red-50 text-red-900'"
+                                >
+                                    <span
+                                        class="flex shrink-0 text-xl"
+                                        :class="popup.type === 'success' ? 'text-green-600' : 'text-red-600'"
+                                        aria-hidden="true"
+                                    >
+                                        {{ popup.type === 'success' ? '✓' : '✕' }}
+                                    </span>
+                                    <p class="flex-1 text-sm font-medium sm:text-base">{{ popup.message }}</p>
+                                    <button
+                                        type="button"
+                                        class="shrink-0 rounded p-1 transition hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                                        :class="popup.type === 'success' ? 'focus:ring-green-500' : 'focus:ring-red-500'"
+                                        aria-label="Close"
+                                        @click="closePopup"
+                                    >
+                                        <span class="sr-only">Close</span>
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </Transition>
+                    </Teleport>
 
                     <div class="mt-16 border-t border-primary-200/60 pt-10">
                         <h2 class="text-lg font-semibold text-slate-900">Other ways to reach us</h2>
@@ -130,3 +211,14 @@ const form = useForm({
         </section>
     </AppLayout>
 </template>
+
+<style scoped>
+.popup-enter-active,
+.popup-leave-active {
+    transition: opacity 0.2s ease;
+}
+.popup-enter-from,
+.popup-leave-to {
+    opacity: 0;
+}
+</style>
