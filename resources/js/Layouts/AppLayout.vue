@@ -2,11 +2,12 @@
 import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
+const t = page.props.translations || {};
 const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/services', label: 'Services' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t.nav?.home ?? 'Home' },
+    { href: '/about', label: t.nav?.about ?? 'About' },
+    { href: '/services', label: t.nav?.services ?? 'Services' },
+    { href: '/contact', label: t.nav?.contact ?? 'Contact' },
 ];
 </script>
 
@@ -41,17 +42,17 @@ const navLinks = [
             <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
                 <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
                     <p class="text-sm text-slate-500">
-                        &copy; {{ new Date().getFullYear() }} {{ $page.props.app?.name || 'Business' }}. All rights reserved.
+                        &copy; {{ new Date().getFullYear() }} {{ $page.props.app?.name || 'Business' }}. {{ t.footer?.rights_reserved ?? 'All rights reserved.' }}
                     </p>
                     <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500 sm:justify-end">
-                        <Link href="/about" class="transition hover:text-primary-600">About</Link>
-                        <Link href="/services" class="transition hover:text-primary-600">Services</Link>
-                        <Link href="/contact" class="transition hover:text-primary-600">Contact</Link>
-                        <Link href="/privacy" class="transition hover:text-primary-600">Privacy Policy</Link>
+                        <Link href="/about" class="transition hover:text-primary-600">{{ t.nav?.about ?? 'About' }}</Link>
+                        <Link href="/services" class="transition hover:text-primary-600">{{ t.nav?.services ?? 'Services' }}</Link>
+                        <Link href="/contact" class="transition hover:text-primary-600">{{ t.nav?.contact ?? 'Contact' }}</Link>
+                        <Link href="/privacy" class="transition hover:text-primary-600">{{ t.nav?.privacy_policy ?? 'Privacy Policy' }}</Link>
                     </div>
                 </div>
                 <p class="mt-4 text-center text-xs text-slate-400">
-                    Operating in the European Union. We respect your privacy and comply with applicable data protection regulations.
+                    {{ t.footer?.eu_notice ?? 'Operating in the European Union. We respect your privacy and comply with applicable data protection regulations.' }}
                 </p>
             </div>
         </footer>

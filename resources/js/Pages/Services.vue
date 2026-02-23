@@ -1,11 +1,13 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 
 defineProps({
     servicesIntro: { type: String, default: '' },
     services: { type: Array, default: () => [] },
 });
+const page = usePage();
+const t = page.props.translations || {};
 </script>
 
 <template>
@@ -14,7 +16,7 @@ defineProps({
             <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
                     <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-                        Our services
+                        {{ t.services?.title ?? 'Our services' }}
                     </h1>
                     <div
                         class="mt-6 text-lg text-slate-600 [&_p]:my-2 [&_a]:text-primary-600 [&_a]:underline"
@@ -41,13 +43,13 @@ defineProps({
                 </div>
 
                 <div class="mt-16 rounded-2xl border border-primary-200/60 bg-primary-800 p-8 text-center text-white sm:p-12">
-                    <h2 class="text-xl font-semibold sm:text-2xl">Ready to get started?</h2>
-                    <p class="mt-3 text-primary-200">Tell us about your needs and we'll propose a tailored approach.</p>
+                    <h2 class="text-xl font-semibold sm:text-2xl">{{ t.services?.ready_title ?? 'Ready to get started?' }}</h2>
+                    <p class="mt-3 text-primary-200">{{ t.services?.ready_subtitle ?? "Tell us about your needs and we'll propose a tailored approach." }}</p>
                     <Link
                         href="/contact"
                         class="mt-6 inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary-800 shadow-sm transition hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-800"
                     >
-                        Contact us
+                        {{ t.services?.contact_us ?? 'Contact us' }}
                     </Link>
                 </div>
             </div>

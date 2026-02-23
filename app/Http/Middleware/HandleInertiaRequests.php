@@ -36,8 +36,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $locale = app()->getLocale();
+        $langPath = lang_path($locale . '/app.php');
+        if (!is_file($langPath)) {
+            $langPath = lang_path('en/app.php');
+        }
+        $translations = is_file($langPath) ? (require $langPath) : [];
+
         return [
             ...parent::share($request),
+            'locale' => $locale,
+            'translations' => $translations,
             'app' => [
                 'name' => \Illuminate\Support\Facades\Schema::hasTable('site_settings')
                     ? SiteSetting::get('site_name', config('app.name'))

@@ -21,6 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $supportedLocales = ['en', 'es', 'pl', 'de', 'fr'];
+        $locale = config('app.locale');
+        if (in_array($locale, $supportedLocales, true)) {
+            app()->setLocale($locale);
+        }
+
         // Ensure public storage link exists (e.g. for hero image).
         $link = public_path('storage');
         if (! is_link($link) && ! is_dir($link)) {

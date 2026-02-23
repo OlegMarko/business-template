@@ -37,13 +37,13 @@ const heroImageSrc = computed(() => props.heroImage || '/images/hero-truck.png')
                                 href="/services"
                                 class="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-slate-900/50"
                             >
-                                Our services
+                                {{ $page.props.translations?.home?.our_services ?? 'Our services' }}
                             </Link>
                             <Link
                                 href="/contact"
                                 class="inline-flex items-center justify-center rounded-lg border-2 border-white bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900/50"
                             >
-                                Get in touch
+                                {{ $page.props.translations?.home?.get_in_touch ?? 'Get in touch' }}
                             </Link>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ const heroImageSrc = computed(() => props.heroImage || '/images/hero-truck.png')
         <section class="border-t border-primary-200/60 bg-white py-16 sm:py-20">
             <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <h2 class="text-center text-2xl font-semibold text-slate-900 sm:text-3xl">
-                    Why work with us
+                    {{ $page.props.translations?.home?.why_work_with_us ?? 'Why work with us' }}
                 </h2>
                 <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     <div

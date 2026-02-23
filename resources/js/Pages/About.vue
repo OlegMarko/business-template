@@ -1,9 +1,12 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue';
+import { usePage } from '@inertiajs/vue3';
 
 defineProps({
     aboutContent: { type: String, default: '' },
 });
+const page = usePage();
+const t = page.props.translations || {};
 </script>
 
 <template>
@@ -12,7 +15,7 @@ defineProps({
             <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
                     <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-                        About us
+                        {{ t.about?.title ?? 'About us' }}
                     </h1>
                     <div
                         v-if="aboutContent"
@@ -20,7 +23,7 @@ defineProps({
                         v-html="aboutContent"
                     />
                     <p v-else class="mt-6 text-lg leading-relaxed text-slate-600">
-                        Content can be edited in the admin panel (Site content → About).
+                        {{ t.about?.placeholder ?? 'Content can be edited in the admin panel (Site content → About).' }}
                     </p>
                 </div>
             </div>
