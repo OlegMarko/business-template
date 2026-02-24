@@ -1,14 +1,21 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const page = usePage();
 const t = page.props.translations || {};
-const navLinks = [
-    { href: '/', label: t.nav?.home ?? 'Home' },
-    { href: '/about', label: t.nav?.about ?? 'About' },
-    { href: '/services', label: t.nav?.services ?? 'Services' },
-    { href: '/contact', label: t.nav?.contact ?? 'Contact' },
-];
+const navLinks = computed(() => {
+    const links = [
+        { href: '/', label: t.nav?.home ?? 'Home' },
+        { href: '/about', label: t.nav?.about ?? 'About' },
+        { href: '/services', label: t.nav?.services ?? 'Services' },
+        { href: '/contact', label: t.nav?.contact ?? 'Contact' },
+    ];
+    if (page.props.hasPublishedPosts) {
+        links.splice(3, 0, { href: '/blog', label: t.nav?.blog ?? 'Blog' });
+    }
+    return links;
+});
 </script>
 
 <template>
@@ -46,6 +53,7 @@ const navLinks = [
                     </p>
                     <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500 sm:justify-end">
                         <Link href="/about" class="transition hover:text-primary-600">{{ t.nav?.about ?? 'About' }}</Link>
+                        <Link v-if="page.props.hasPublishedPosts" href="/blog" class="transition hover:text-primary-600">{{ t.nav?.blog ?? 'Blog' }}</Link>
                         <Link href="/services" class="transition hover:text-primary-600">{{ t.nav?.services ?? 'Services' }}</Link>
                         <Link href="/contact" class="transition hover:text-primary-600">{{ t.nav?.contact ?? 'Contact' }}</Link>
                         <Link href="/privacy" class="transition hover:text-primary-600">{{ t.nav?.privacy_policy ?? 'Privacy Policy' }}</Link>

@@ -33,7 +33,10 @@ class AppServiceProvider extends ServiceProvider
             Artisan::call('storage:link');
         }
 
-        // Ensure hero upload directory exists so Filament uploads can succeed.
+        // Ensure hero, favicon and og upload directories exist.
         Storage::disk('public')->makeDirectory('hero');
+        Storage::disk('public')->makeDirectory('favicon');
+        Storage::disk('public')->makeDirectory('og');
+        Storage::disk('public')->makeDirectory('og/posts');
     }
 }

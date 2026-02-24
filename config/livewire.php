@@ -130,8 +130,8 @@ return [
 
     'temporary_file_upload' => [
         'disk' => env('LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK'), // Example: 'local', 's3'             | Default: 'default'
-        'rules' => ['file', 'image', 'max:30720'],             // 30MB max for hero images (min. 1200px wide)
-        'directory' => null,                                  // Example: 'tmp'                     | Default: 'livewire-tmp'
+        'rules' => ['file', 'max:30720'],                       // 30MB max; no 'image' so favicon.ico etc. are allowed; each field validates its own types on submit
+        'directory' => null,                                    // Example: 'tmp'                     | Default: 'livewire-tmp'
         'middleware' => null,                                 // Example: 'throttle:5,1'            | Default: 'throttle:60,1'
         'preview_mimes' => [                                  // Supported file types for temporary pre-signed file URLs...
             'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',

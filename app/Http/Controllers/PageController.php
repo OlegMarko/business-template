@@ -6,6 +6,7 @@ use App\Mail\ContactRequestConfirmation;
 use App\Mail\ContactRequestNotification;
 use App\Models\ContactRequest;
 use App\Models\HomeBlock;
+use App\Models\Post;
 use App\Models\Service;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class PageController extends Controller
 {
@@ -118,6 +120,61 @@ class PageController extends Controller
 
         return Inertia::render('Privacy', [
             'privacyContent' => $privacyContent,
+        ]);
+    }
+
+    public function blog(): Response|SymfonyResponse
+    {
+        if (! Schema::hasTable('posts')) {
+            abort(404);
+        }
+
+        $posts = Post::published()
+            ->orderByDesc('published_at')
+            ->get()
+            ->map(fn (Post $post) => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'excerpt' => \Illuminate\Support\Str::limit(strip_tags($post->content), 160),
+                'published_at' => $post->published_at->toIso8601String(),
+            ]);
+
+        if ($posts->isEmpty()) {
+            abort(404);
+        }
+
+        return Inertia::render('Blog/Index', [
+            'posts' => $posts,
+        ]);
+    }
+
+    public function blogShow(Request $request, string $slug): Response|SymfonyResponse
+    {
+        if (! Schema::hasTable('posts')) {
+            abort(404);
+        }
+
+        $post = Post::published()->where('slug', $slug)->first();
+
+        if (! $post) {
+            abort(404);
+        }
+
+        $ogImageUrl = $post->og_image ? asset('storage/' . $post->og_image) : null;
+
+        return Inertia::render('Blog/Show', [
+            'post' => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'content' => $post->content,
+                'published_at' => $post->published_at->toIso8601String(),
+                'meta_title' => $post->meta_title,
+                'meta_description' => $post->meta_description,
+                'og_image_url' => $ogImageUrl,
+                'canonical_url' => $request->url(),
+            ],
         ]);
     }
 }

@@ -5,6 +5,7 @@ return [
         'home' => 'Home',
         'about' => 'About',
         'services' => 'Services',
+        'blog' => 'Blog',
         'contact' => 'Contact',
         'privacy_policy' => 'Privacy Policy',
     ],
@@ -22,6 +23,12 @@ return [
         'ready_title' => 'Ready to get started?',
         'ready_subtitle' => "Tell us about your needs and we'll propose a tailored approach.",
         'contact_us' => 'Contact us',
+    ],
+    'blog' => [
+        'title' => 'Blog',
+        'intro' => 'News and updates.',
+        'read_more' => 'Read more',
+        'back' => 'Back to blog',
     ],
     'contact' => [
         'title' => 'Contact us',

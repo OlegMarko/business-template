@@ -19,7 +19,7 @@ const t = page.props.translations || {};
                         {{ t.services?.title ?? 'Our services' }}
                     </h1>
                     <div
-                        class="mt-6 text-lg text-slate-600 [&_p]:my-2 [&_a]:text-primary-600 [&_a]:underline"
+                        class="rich-content mt-6 text-lg text-slate-600"
                         v-html="servicesIntro"
                     />
                 </div>

@@ -9,3 +9,5 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'contactStore'])->name('contact.store');
 Route::get('/services', [PageController::class, 'services'])->name('services');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/blog', [PageController::class, 'blog'])->name('blog');
+Route::get('/blog/{slug}', [PageController::class, 'blogShow'])->name('blog.show');

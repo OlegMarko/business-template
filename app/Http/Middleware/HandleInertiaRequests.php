@@ -52,6 +52,9 @@ class HandleInertiaRequests extends Middleware
                     ? SiteSetting::get('site_name', config('app.name'))
                     : config('app.name'),
             ],
+            'hasPublishedPosts' => \Illuminate\Support\Facades\Schema::hasTable('posts')
+                ? \App\Models\Post::published()->exists()
+                : false,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

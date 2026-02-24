@@ -23,6 +23,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -69,6 +70,10 @@ class SiteContent extends Page
         $keys = [
             'site_name',
             'primary_color',
+            'favicon',
+            'meta_title',
+            'meta_description',
+            'og_image',
             'hero_image',
             'home_hero_title',
             'home_hero_description',
@@ -103,6 +108,48 @@ class SiteContent extends Page
                                             ->label('Primary color')
                                             ->default('#0d9488')
                                             ->helperText('Brand color used for buttons, links, and accents.'),
+                                    ]),
+                                Section::make('Favicon & SEO')
+                                    ->schema([
+                                        FileUpload::make('favicon')
+                                            ->label('Favicon')
+                                            ->disk('public')
+                                            ->directory('favicon')
+                                            ->visibility('public')
+                                            ->acceptedFileTypes(['image/png', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/svg+xml'])
+                                            ->maxSize(512)
+                                            ->helperText('Site icon (e.g. .ico, .png, .svg). Shown in browser tab. Recommended: 32×32 or 64×64 px.')
+                                            ->saveUploadedFileUsing(function (FileUpload $component, TemporaryUploadedFile $file): ?string {
+                                                Storage::disk('public')->makeDirectory('favicon');
+                                                $ext = $file->getClientOriginalExtension() ?: 'png';
+                                                $filename = 'favicon.' . $ext;
+                                                $path = $file->storeAs('favicon', $filename, ['disk' => 'public']);
+                                                return $path ?: null;
+                                            }),
+                                        TextInput::make('meta_title')
+                                            ->label('Meta title')
+                                            ->maxLength(70)
+                                            ->helperText('Default page title for search engines (recommended 50–70 characters).'),
+                                        Textarea::make('meta_description')
+                                            ->label('Meta description')
+                                            ->rows(3)
+                                            ->maxLength(320)
+                                            ->helperText('Default description for search results and social sharing (recommended 150–320 characters).'),
+                                        FileUpload::make('og_image')
+                                            ->label('Social sharing image (Open Graph)')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('og')
+                                            ->visibility('public')
+                                            ->imagePreviewHeight('120')
+                                            ->maxSize(2048)
+                                            ->helperText('Image shown when the site is shared on social networks. Recommended: 1200×630 px.')
+                                            ->saveUploadedFileUsing(function (FileUpload $component, TemporaryUploadedFile $file): ?string {
+                                                Storage::disk('public')->makeDirectory('og');
+                                                $filename = Str::ulid() . '.' . ($file->getClientOriginalExtension() ?: 'jpg');
+                                                $path = $file->storeAs('og', $filename, ['disk' => 'public']);
+                                                return $path ?: null;
+                                            }),
                                     ]),
                             ]),
                         Tab::make('Home page')
@@ -237,6 +284,36 @@ class SiteContent extends Page
             ->success()
             ->title('Site content saved.')
             ->send();
+    }
+
+    /**
+     * @return array<Action | \Filament\Actions\ActionGroup>
+     */
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('generateSitemap')
+                ->label('Generate sitemap')
+                ->icon('heroicon-o-document-duplicate')
+                ->color('gray')
+                ->action(function (): void {
+                    $exitCode = Artisan::call('sitemap:generate');
+                    $output = trim(Artisan::output());
+                    if ($exitCode === 0) {
+                        Notification::make()
+                            ->success()
+                            ->title('Sitemap generated')
+                            ->body($output ?: 'sitemap.xml has been updated.')
+                            ->send();
+                    } else {
+                        Notification::make()
+                            ->danger()
+                            ->title('Sitemap generation failed')
+                            ->body($output ?: 'Please try again or run: php artisan sitemap:generate')
+                            ->send();
+                    }
+                }),
+        ];
     }
 
     /**

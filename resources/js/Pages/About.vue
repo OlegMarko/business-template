@@ -19,7 +19,7 @@ const t = page.props.translations || {};
                     </h1>
                     <div
                         v-if="aboutContent"
-                        class="about-content mt-6"
+                        class="rich-content about-content mt-6"
                         v-html="aboutContent"
                     />
                     <p v-else class="mt-6 text-lg leading-relaxed text-slate-600">

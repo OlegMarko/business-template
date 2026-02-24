@@ -23,3 +23,62 @@
     --color-primary-900: #134e4a;
     --color-primary-950: #042f2e;
 }
+
+/* Rich text content from Filament RichEditor – headings, lists, links, blockquotes */
+.rich-content {
+    @apply text-slate-700 leading-relaxed;
+}
+
+.rich-content p {
+    @apply my-4;
+}
+
+.rich-content p:first-child {
+    @apply mt-0;
+}
+
+.rich-content p:last-child {
+    @apply mb-0;
+}
+
+.rich-content h2 {
+    @apply mt-8 mb-3 text-2xl font-semibold text-slate-900;
+}
+
+.rich-content h3 {
+    @apply mt-6 mb-2 text-xl font-semibold text-slate-900;
+}
+
+.rich-content ul {
+    @apply my-4 list-disc pl-6 space-y-1;
+}
+
+.rich-content ol {
+    @apply my-4 list-decimal pl-6 space-y-1;
+}
+
+.rich-content li {
+    @apply pl-1;
+}
+
+.rich-content a {
+    @apply text-primary-600 underline decoration-primary-400/60 underline-offset-2 hover:text-primary-700 hover:decoration-primary-500;
+}
+
+.rich-content blockquote {
+    @apply my-4 border-l-4 border-primary-200 pl-4 italic text-slate-600;
+}
+
+/* Variant for light text (e.g. hero overlay) */
+.rich-content--light {
+    @apply text-white/95;
+}
+
+.rich-content--light h2,
+.rich-content--light h3 {
+    @apply text-white;
+}
+
+.rich-content--light a {
+    @apply text-white underline decoration-white/70 hover:decoration-white;
+}

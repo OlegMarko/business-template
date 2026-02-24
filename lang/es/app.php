@@ -5,6 +5,7 @@ return [
         'home' => 'Inicio',
         'about' => 'Nosotros',
         'services' => 'Servicios',
+        'blog' => 'Blog',
         'contact' => 'Contacto',
         'privacy_policy' => 'Política de privacidad',
     ],
@@ -22,6 +23,12 @@ return [
         'ready_title' => '¿Listo para empezar?',
         'ready_subtitle' => 'Cuéntenos sus necesidades y le propondremos un enfoque a medida.',
         'contact_us' => 'Contacto',
+    ],
+    'blog' => [
+        'title' => 'Blog',
+        'intro' => 'Noticias y novedades.',
+        'read_more' => 'Leer más',
+        'back' => 'Volver al blog',
     ],
     'contact' => [
         'title' => 'Contacto',

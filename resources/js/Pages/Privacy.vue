@@ -20,7 +20,7 @@ const appName = page.props.app?.name || 'Business';
                     </h1>
                     <div
                         v-if="privacyContent"
-                        class="privacy-content mt-6 space-y-12 text-slate-600"
+                        class="rich-content privacy-content mt-6 space-y-12 text-slate-600"
                         v-html="privacyContent"
                     />
                     <template v-else>

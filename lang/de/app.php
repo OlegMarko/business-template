@@ -5,6 +5,7 @@ return [
         'home' => 'Startseite',
         'about' => 'Über uns',
         'services' => 'Leistungen',
+        'blog' => 'Blog',
         'contact' => 'Kontakt',
         'privacy_policy' => 'Datenschutz',
     ],
@@ -22,6 +23,12 @@ return [
         'ready_title' => 'Bereit loszulegen?',
         'ready_subtitle' => 'Beschreiben Sie uns Ihre Anforderungen und wir unterbreiten Ihnen ein passendes Angebot.',
         'contact_us' => 'Kontakt',
+    ],
+    'blog' => [
+        'title' => 'Blog',
+        'intro' => 'Neuigkeiten und Updates.',
+        'read_more' => 'Weiterlesen',
+        'back' => 'Zurück zum Blog',
     ],
     'contact' => [
         'title' => 'Kontakt',

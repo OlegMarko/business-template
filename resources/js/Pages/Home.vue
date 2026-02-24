@@ -29,7 +29,7 @@ const heroImageSrc = computed(() => props.heroImage || '/images/hero-truck.png')
                             {{ heroTitle }}
                         </h1>
                         <div
-                            class="mt-6 text-lg text-white/95 drop-shadow-sm [&_p]:my-2 [&_a]:underline [&_a]:decoration-white/70"
+                            class="rich-content rich-content--light mt-6 text-lg drop-shadow-sm [&_p]:my-2"
                             v-html="heroDescription"
                         />
                         <div class="mt-10 flex flex-wrap gap-4">
