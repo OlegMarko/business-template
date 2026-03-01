@@ -177,4 +177,9 @@ class PageController extends Controller
             ],
         ]);
     }
+
+    public function sitemap(): Response|SymfonyResponse
+    {
+        return response()->xml(public_path('sitemap.xml'));
+    }
 }
