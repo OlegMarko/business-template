@@ -25,7 +25,7 @@ class SitemapGenerate extends Command
         foreach ($static as $path) {
             $urls[] = [
                 'loc' => $baseUrl . $path,
-                'lastmod' => now()->toIso8601String(),
+                'lastmod' => now()->toDateString(),
                 'changefreq' => $path === '/' ? 'weekly' : 'monthly',
                 'priority' => $path === '/' ? '1.0' : '0.8',
             ];
@@ -35,7 +35,7 @@ class SitemapGenerate extends Command
         if (Schema::hasTable('posts') && Post::published()->exists()) {
             $urls[] = [
                 'loc' => $baseUrl . '/blog',
-                'lastmod' => now()->toIso8601String(),
+                'lastmod' => now()->toDateString(),
                 'changefreq' => 'weekly',
                 'priority' => '0.8',
             ];
@@ -43,7 +43,7 @@ class SitemapGenerate extends Command
             foreach (Post::published()->orderByDesc('published_at')->get() as $post) {
                 $urls[] = [
                     'loc' => $baseUrl . '/blog/' . $post->slug,
-                    'lastmod' => $post->updated_at->toIso8601String(),
+                    'lastmod' => $post->updated_at->toDateString(),
                     'changefreq' => 'monthly',
                     'priority' => '0.6',
                 ];
